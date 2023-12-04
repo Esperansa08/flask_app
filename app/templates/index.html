@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Привет, {{ current_user.username }}!</h1>
+   <!--{% for anime in animeы %}
+    <div><p>{{ anime.author.username }} says: <b>{{ post.body }}</b></p></div>
+    {% endfor %}-->
+    <main>
+        <section class="container my-5">
+          <div class="row">
+            <h1>{{ context.anime.title }}</h1>
+            <div class="col-12 col-lg-7 my-5">
+              <p>
+                {{ context.anime.description }}
+              </p>
+  
+              <p>
+                <h3>Аниме из Кинопоиска: </h3>
+                {{context.kinopoisk}}     {{context.name}} - {{context.description}}
+              </p>
+            </div>
+            <div class="col-12 col-lg-5">
+              <img
+                class="img-fluid mx-auto d-block"
+                src="static/img/illustration.png"
+                alt=""
+              />
+            </div>
+          </div>
+        </section>
+      </main>
+{% endblock %}

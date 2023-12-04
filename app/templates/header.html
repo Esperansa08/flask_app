@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="static/img/fav/favicon.ico" type="image" />
+        <link rel="apple-touch-icon" sizes="180x180" href="static/img/fav/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="static/img/fav/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="static/img/fav/favicon-16x16.png" />
+        <link rel="stylesheet" href="static/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="static/css/style.css" />
+
+        <header>
+          <nav class="navbar navbar-light" style="background-color: orange">
+             <div class="container">
+                 <img src="static/img/logo.png" width="60" height="60" class="d-inline-block align-top" alt="">
+                 <!--<span width="40" height="40" style="color:black">Anime</span>-->
+
+                    Anime:
+                    <a href="{{ url_for('index') }}">Главная</a>
+                    {% if current_user.is_anonymous %}
+                    <a href="{{ url_for('login') }}">Войти</a>
+                    {% else %}
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                    {% endif %}
+                </div>
+               </a>
+                   <header class="pt-3">
+           </nav>  
+           <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+              <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="static/img/logo.svg" height="50" class="" alt="" />
+              </a>
+              <div class="d-flex justify-content-end">
+                <ul class="nav nav-pills">
+                  <li class="nav-item pe-5">
+                    <a class="nav-link" href="{{ url_for('add_anime') }}">
+                      Добавить аниме
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('index') }}">
+                      Хочу другое аниме
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('anime_list') }}">
+                      Список аниме
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+    </head>
