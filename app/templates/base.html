@@ -1,6 +1,6 @@
-  {%include 'header.html'%} 
-    <body>
 
+  {%include 'includes/header.html'%} 
+    <body>
         <hr>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -12,5 +12,7 @@
         {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
+
     </body>
-  {%include 'footer.html'%} 
+  {%include 'includes/footer.html'%} 
+</nav>

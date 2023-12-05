@@ -15,9 +15,7 @@
           <nav class="navbar navbar-light" style="background-color: orange">
              <div class="container">
                  <img src="static/img/logo.png" width="60" height="60" class="d-inline-block align-top" alt="">
-                 <!--<span width="40" height="40" style="color:black">Anime</span>-->
-
-                    Anime:
+                    <h2>Аниматека</h2>
                     <a href="{{ url_for('index') }}">Главная</a>
                     {% if current_user.is_anonymous %}
                     <a href="{{ url_for('login') }}">Войти</a>
@@ -27,8 +25,8 @@
                 </div>
                </a>
                    <header class="pt-3">
-           </nav>  
-           <nav class="navbar navbar-expand-lg navbar-light">
+          </nav>
+          
             <div class="container">
               <a class="navbar-brand" href="{{ url_for('index') }}">
                 <img src="static/img/logo.svg" height="50" class="" alt="" />
@@ -52,7 +50,7 @@
                   </li>
                 </ul>
               </div>
-            </div>
-          </nav>
+            </div>            
+
         </header>
     </head>

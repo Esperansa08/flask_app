@@ -32,19 +32,24 @@ class RegistrationForm(FlaskForm):
 
 
 class AddForm(FlaskForm):
-    title = StringField("Title: ", validators=[DataRequired()])
-    description = TextAreaField("Description", validators=[DataRequired()])
+    title = StringField("Название", validators=[DataRequired()])
+    description = TextAreaField("Описание", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+    def validate_title(self, title):
+        title = Anime.query.filter_by(title=title.data).first()
+        print('222!!!!!!!!!!!!', title)
+        if title is not None:
+            raise ValidationError('Please use a different title.')
+
     # def validate_title(self, title):
-    #     title = Anime.query.filter_by(title=title.data).first()
-    #     print('222!!!!!!!!!!!!', title)
-    #     if title is not None:
-    #         raise ValidationError('Please use a different title.')
+    #         title = Book.query.filter_by(title=title.data).first()
+    #         if title:
+    #             raise ValidationError('Такая книга уже есть в списке прочитанных.')
 
 
 class UpdateForm(FlaskForm):
-    title = StringField("Title: ", validators=[DataRequired()])
+    title = StringField("Title", validators=[DataRequired()])
     description = TextAreaField("Description", validators=[DataRequired()])
     submit = SubmitField("Submit")
 

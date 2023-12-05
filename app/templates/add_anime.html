@@ -11,20 +11,27 @@
           <div class="col-md-8 p-5">
             <div class="card">
               <div class="card-header">
-                <body>
-                  <form action="#" method="POST">
+
+                <body>   
+                    <form action="" method="post" novalidate>
+                      {{ form.hidden_tag() }}
                       <p>
-                    <label for="title">Название</label>
-                    <input type="text" name="title">
+                          {{ form.title.label }}<br>
+                          {{ form.title(size=32) }}<br>
+                          {% for error in form.title.errors %}
+                          <span style="color: red;">[{{ error }}]</span>
+                          {% endfor %}
                       </p>
                       <p>
-                    <label for="description">Описание</label>
-                    <input type="text" name="description">
+                          {{ form.description.label }}<br>
+                          {{ form.description(size=32) }}<br>
+                          {% for error in form.description.errors %}
+                          <span style="color: red;">[{{ error }}]</span>
+                          {% endfor %}
                       </p>
-                      <p>
-                    <input type="submit">
-                      </p>
+                      <p>{{ form.submit() }}</p>
                   </form>
+                  
               </body>
                   </div>
                 </form>

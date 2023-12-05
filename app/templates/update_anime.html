@@ -13,23 +13,18 @@
               <div class="card-header">
 
                 <body>
-                  <form action="#" method="POST">
-                    <p>
-                  <label for="title">Название</label>
-                  <textarea name="text" id="title" class="form-control">
-                    {{context.anime.title}}
-                  </textarea>
-                    </p>
-                    <p>
-                  <label for="description">Описание</label>
-                  <textarea name="text" id="description" class="form-control">
-                    {{context.anime.description}}
-                  </textarea>
-                    </p>
-                    <p>
-                  <input type="submit">
-                    </p>
-                  </form>
+                    <form action="" method="post" novalidate>
+                        {{ context.form.hidden_tag() }}
+                        <p>
+                            {{ form.title.label }}{{amine.title}}<br>
+                            {{ form.title(size=32) }}<br>
+                        </p>
+                        <p>
+                            {{ form.description.label }}<br>
+                            {{ form.description(size=32) }}<br>
+                        </p>
+                        <p>{{ form.submit() }}</p>
+                    </form>
                   
               </body>
                   </div>

@@ -6,11 +6,9 @@ from app.forms import LoginForm, RegistrationForm, AddForm, UpdateForm
 from app.models import User, Anime
 from random import randrange
 import threading
-from kinopoisk_dev import KinopoiskDev, MovieParams, MovieField, PossValField
 import asyncio
 from dotenv import load_dotenv
 import os
-from kinopoisk import KPClient
 
 import requests
 
@@ -19,7 +17,6 @@ import abc
 from typing import Any, Dict, Optional
 
 from httpx import Response
-import httpx
 
 
 async def background_task():
@@ -73,60 +70,55 @@ def add_anime():
     if anime is not None:
         flash('Такое аниме уже есть в базе')
         #return redirect(url_for('index'))
-    print('!!!!!!!!!!!!', form.validate_on_submit())
+    
     if form.validate_on_submit():
         anime = Anime(title=form.title.data, description=form.description.data)
-        # try:
         db.session.add(anime)
         db.session.commit()
         flash('Запись в базу добавлена!')
         return redirect(url_for('index'))
-        # except:
-        #     return "При добавлении аниме произошла ошибка"
     return render_template('add_anime.html', form=form)
 
 
 @app.route('/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_anime(id):
-    anime = Anime.query.get_or_404(id)
-    try:
-        db.session.delete(anime)
-        db.session.commit()
-        flash('Запись удалена из базы!')
-        return redirect(url_for('anime_list'))
-    except:
-        return "При удалении аниме произошла ошибка"
-
+    anime = Anime.query.filter_by(id=id).first()
+    if anime is None:
+        flash('Такого аниме нет в базе')
+        return redirect(url_for('index'))
+    db.session.delete(anime)
+    db.session.commit()
+    flash('Запись удалена из базы!')
+    return redirect(url_for('anime_list'))
 
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_anime(id):
-    form = UpdateForm()
+    #form = UpdateForm()
     anime = Anime.query.get_or_404(id)
-    # if anime is None:
-    #     flash('Такого аниме нет в базе')
-    #     return redirect(url_for('anime_list'))
+    form = UpdateForm()
+    if anime is None:
+        flash('Такого аниме нет в базе')
+        return redirect(url_for('anime_list'))
     print('!!!!!!!!!!!!', form.validate_on_submit())
     if form.validate_on_submit():
         anime.title = form.title.data
         anime.description = form.description.data
-        print('!!!!!!!!!!!!', anime.title, anime.description)
-        try:
-        #db.session.add(anime)
-            db.session.commit()
-            flash('Запись изменена в базе!')
-            return redirect(url_for('anime_list'))
-        except:
-            return "При редактировании аниме произошла ошибка"
+        anime.id = anime.id
+        print('!!!!!!!!!!!!', form.title.data)
+        db.session.add(anime)
+        db.session.commit()
+        flash('Запись изменена в базе!')
+        return redirect(url_for('anime_list'))
     context = {
         'form': form,
         'anime': anime,
         'is_edit': True,
     }
     print('!!!!!!!!!!!!', anime.title, anime.description, context['is_edit'])
-    return render_template('update_anime.html', context=context)
+    return render_template('add_anime.html', form=form, anime=anime)
 
 
 @app.route('/anime_list', methods=['GET'])
