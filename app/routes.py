@@ -9,9 +9,9 @@ import threading
 import asyncio
 from dotenv import load_dotenv
 import os
-
+from flask_restx import Api, Resource, reqparse
 import requests
-
+api = Api()
 load_dotenv()
 import abc
 from typing import Any, Dict, Optional
