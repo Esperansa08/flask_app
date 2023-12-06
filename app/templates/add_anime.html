@@ -1,41 +1,39 @@
 {% extends "base.html" %}
-  {% block title %}Добавить аниме{% endblock %}
+{% block title %}Добавить аниме{% endblock %}
 {% block content %}
-    <main>
-      <div class="container py-5">
-        <div class="row justify-content-center">
-          <div class="col-md-8 p-5">
-            <div class="card">
-              <div class="card-header">
+  <main>
 
-                <body>   
-                    <form action="" method="post" novalidate>
-                      {{ form.hidden_tag() }}
-                      <p>
-                          {{ form.title.label }}<br>
-                          {{ form.title(size=32) }}<br>
-                          {% for error in form.title.errors %}
-                          <span style="color: red;">[{{ error }}]</span>
-                          {% endfor %}
-                      </p>
-                      <p>
-                          {{ form.description.label }}<br>
-                          {{ form.description(size=32) }}<br>
-                          {% for error in form.description.errors %}
-                          <span style="color: red;">[{{ error }}]</span>
-                          {% endfor %}
-                      </p>
-                      <p>{{ form.submit() }}</p>
-                  </form>
-                  
-              </body>
-                  </div>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8 p-5">
+          <div class="card">
+            <div class="card-header">
+              <h1>Добавить аниме</h1>
+              <body>   
+                <form action="" method="post" novalidate>
+                  {{ form.hidden_tag() }}
+                  <p>
+                      {{ form.title.label }}<br>
+                      {{ form.title(size=32) }}<br>
+                      {% for error in form.title.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                  </p>
+                  <p>
+                      {{ form.description.label }}<br>
+                      {{ form.description(size=32) }}<br>
+                      {% for error in form.description.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                  </p>
+                  <p>{{ form.submit() }}</p>
                 </form>
-              </div>
+              </body>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 {% endblock %} 
    

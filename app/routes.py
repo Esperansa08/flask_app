@@ -108,7 +108,7 @@ def update_anime(id):
         db.session.commit()
         flash("Запись изменена в базе!")
         return redirect(url_for("anime_list"))
-    return render_template("add_anime.html", form=form)
+    return render_template("update_anime.html", form=form)
 
 
 @app.route("/anime_list", methods=["GET"])

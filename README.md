@@ -68,11 +68,15 @@ python -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
+Должен быть запущен докер
+```
 Запустить программу:
 
 ```
 flask run
 ```
+docker-compose up -d
+
 
 
 ## Автор 

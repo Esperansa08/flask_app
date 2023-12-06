@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Sign In</h1>
+<section class="container my-5">
+  <div class="row">
+    <h1>Войти</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
@@ -21,5 +23,7 @@
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>
-    <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+    <p>Новый пользователь? <a href="{{ url_for('register') }}">Зарегистрироваться!</a></p>
+  </div>
+</section>
 {% endblock %}

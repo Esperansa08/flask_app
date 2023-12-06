@@ -6,8 +6,8 @@
     <br>
     {% for an in anime[::-1] %}
       <p>{{an.id}}. {{an.title}} - {{an.description}}
-        <a href="{{ url_for('delete_anime', id = an.id)}}">Удалить</a>
-        <a href="{{ url_for('update_anime', id = an.id)}}">Изменить</a></p>
+        <a href="{{ url_for('delete_anime', id = an.id)}}"> Удалить </a>
+        <a href="{{ url_for('update_anime', id = an.id)}}"> Изменить </a></p>
     {%endfor%}
 </div> 
 {% endblock %} 

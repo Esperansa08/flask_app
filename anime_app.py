@@ -5,7 +5,7 @@ import os
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from app.models import db, migrate
-from app.routes import api
+
 
 #load_dotenv()
 
@@ -14,15 +14,6 @@ app = Flask(__name__)
 api = Api(app)
 
 
-# app.config['SECRET_KEY'] = SECRET_KEY
-# app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-
-# db.init_app(app)
-# migrate.init_app(app, db)
-# api.init_app(app,
-#              version=VERSION, title='Аниматика',
-#              description='Anime base')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flask:slimdingo85@mysql:3306/flask' #'mysql+pymysql://{}:{}@{}/{}'.format(
 #     os.getenv('DB_USER', 'flask'),

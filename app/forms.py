@@ -6,49 +6,49 @@ from app.models import User, Anime
 
 
 class LoginForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    remember_me = BooleanField("Remember Me")
-    submit = SubmitField("Sign In")
+    username = StringField("Имя пользователя", validators=[DataRequired()])
+    password = PasswordField("Пароль", validators=[DataRequired()])
+    remember_me = BooleanField("Запомнить меня")
+    submit = SubmitField("Отправить")
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired()])
+    username = StringField("Имя пользователя", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired()])
+    password = PasswordField("Пароль", validators=[DataRequired()])
     password2 = PasswordField(
-        "Repeat Password", validators=[DataRequired(), EqualTo("password")]
+        "Повторите пароль", validators=[DataRequired(), EqualTo("Пароль")]
     )
-    submit = SubmitField("Register")
+    submit = SubmitField("Зарегистрироваться")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError("Please use a different username.")
+            raise ValidationError("Используйте другое имя пользователя!")
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError("Please use a different email address.")
+            raise ValidationError("Используйте другой email адрес.")
 
 
 class AddForm(FlaskForm):
     title = StringField("Название", validators=[DataRequired()])
     description = TextAreaField("Описание", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    submit = SubmitField("Сохранить")
 
     def validate_title(self, title):
         title = Anime.query.filter_by(title=title.data).first()
         if title is not None:
-            raise ValidationError("Please use a different title.")
+            raise ValidationError("Используйте другое название аниме.")
 
 
 class UpdateForm(FlaskForm):
-    title = StringField("Title", validators=[DataRequired()])
-    description = TextAreaField("Description", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    title = StringField("Название", validators=[DataRequired()])
+    description = TextAreaField("Описание", validators=[DataRequired()])
+    submit = SubmitField("Сохранить")
 
-    def validate_title(self, title):
-        anime = Anime.query.filter_by(title=title.data).first()
-        if anime is not None:
-            raise ValidationError("Please use a different title.")
+    # def validate_title(self, title):
+    #     anime = Anime.query.filter_by(title=title.data).first()
+    #     if anime is not None:
+    #         raise ValidationError("Please use a different title.")
