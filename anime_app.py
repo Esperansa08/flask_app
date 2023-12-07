@@ -12,9 +12,11 @@ from app.models import db, migrate
 app = Flask(__name__)
 cache = Cache(app)
 api = Api(app)
-cache.init_app(app, config={'CACHE_TYPE': 'SimpleCache'})
+cache.init_app(app, config={"CACHE_TYPE": "SimpleCache"})
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flask:slimdingo85@mysql:3306/flask' #'mysql+pymysql://{}:{}@{}/{}'.format(
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "mysql+pymysql://flask:slimdingo85@mysql:3306/flask"  #'mysql+pymysql://{}:{}@{}/{}'.format(
 #     os.getenv('DB_USER', 'flask'),
 #     os.getenv('DB_PASSWORD', ''),
 #     os.getenv('DB_HOST', 'mysql'),
