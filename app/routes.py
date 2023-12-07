@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app, db
+from app import app, db, cache
 from app.forms import LoginForm, RegistrationForm, AddForm, UpdateForm
 from app.models import User, Anime
 from random import randrange
@@ -10,14 +10,28 @@ import asyncio
 from dotenv import load_dotenv
 import os
 import requests
-#from flask_swagger import swagger
+# from flask_caching import Cache
+# cache = Cache(app)
 
 load_dotenv()
 
-import abc
-from typing import Any, Dict, Optional
+# from celery import Celery
+# import schedule
 
-from httpx import Response
+
+# celery = Celery(__name__)
+
+
+# @celery.task
+# def create_backup():
+#     # Ваш код для создания резервной копии
+#     schedule.every().day.at("02:00").do(create_backup)
+
+
+# celery.start()
+
+
+from typing import Any, Dict, Optional
 
 
 async def background_task():
@@ -34,13 +48,9 @@ async def background_task():
     )
     name = response.json()["name"]
     description = response.json()["description"]
-    context = {"name": name, "description": description}
     return f"{name} - {description}"
-    # print('!!!!!!!!!!!!', name, description)
-    # return render_template('index.html', context=context)
 
 
-# @app.route('/start_task')
 def start_task():
     background_thread = threading.Thread(target=background_task)
     background_thread.start()
@@ -112,6 +122,7 @@ def update_anime(id):
 
 
 @app.route("/anime_list", methods=["GET"])
+@cache.cached(timeout=60)
 @login_required
 def anime_list():
     anime = Anime.query.all()
@@ -176,4 +187,3 @@ def internal_error(error):
 #     print(swag)
 #     swag['info']['paths'] = 'j,jm,hjmcjmcj'
 #     return jsonify(swag)
-
