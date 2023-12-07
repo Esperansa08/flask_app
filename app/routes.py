@@ -10,8 +10,7 @@ import asyncio
 from dotenv import load_dotenv
 import os
 import requests
-# from flask_caching import Cache
-# cache = Cache(app)
+
 
 load_dotenv()
 
@@ -22,13 +21,7 @@ load_dotenv()
 # celery = Celery(__name__)
 
 
-# @celery.task
-# def create_backup():
-#     # Ваш код для создания резервной копии
-#     schedule.every().day.at("02:00").do(create_backup)
 
-
-# celery.start()
 
 
 from typing import Any, Dict, Optional
@@ -43,9 +36,8 @@ async def background_task():
     response = requests.get(
         os.getenv("SERVER_URL"),
         params={"genres.name": "аниме"},
-        # headers={'X-API-KEY': os.getenv('TOKEN')})
-        headers={"X-API-KEY": "TMTAE1J-SY84Z4S-G26ZA5T-HAT3VD0"},
-    )
+        headers={'X-API-KEY': os.getenv('TOKEN')})
+
     name = response.json()["name"]
     description = response.json()["description"]
     return f"{name} - {description}"
