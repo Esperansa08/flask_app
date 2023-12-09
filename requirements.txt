@@ -66,3 +66,7 @@ flask-msearch==0.2.9.2
 celery
 schedule
 pre-commit==3.5.0
+flask_swagger_ui==4.11.1
+apispec-webframeworks==0.5.2
+marshmallow==3.20.1
+flask_swagger

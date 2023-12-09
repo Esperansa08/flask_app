@@ -1,7 +1,15 @@
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import (
+    render_template,
+    flash,
+    redirect,
+    url_for,
+    request,
+    jsonify,
+    json,
+)
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from app import app, db, cache
+from app import app, db, cache, spec
 from app.forms import LoginForm, RegistrationForm, AddForm, UpdateForm
 from app.models import User, Anime
 from random import randrange
@@ -10,7 +18,7 @@ import asyncio
 from dotenv import load_dotenv
 import os
 import requests
-
+from flask_swagger import swagger
 
 load_dotenv()
 
@@ -19,9 +27,6 @@ load_dotenv()
 
 
 # celery = Celery(__name__)
-
-
-
 
 
 from typing import Any, Dict, Optional
@@ -36,11 +41,14 @@ async def background_task():
     response = requests.get(
         os.getenv("SERVER_URL"),
         params={"genres.name": "аниме"},
-        headers={'X-API-KEY': os.getenv('TOKEN')})
-
+        headers={'X-API-KEY': os.getenv('TOKEN')},
+    )
     name = response.json()["name"]
     description = response.json()["description"]
-    return f"{name} - {description}"
+    image = response.json()['poster']['previewUrl']
+    data = {"name": name, "description": description, "image": image}
+    # return f"{image}{name} - {description}"
+    return data
 
 
 def start_task():
@@ -68,6 +76,16 @@ async def index():
 @app.route("/add_anime", methods=["GET", "POST"])
 @login_required
 def add_anime():
+    """Gist detail view.
+    ---
+    get:
+      responses:
+        200:
+          description: Endpoints related to Demo
+          content:
+            application/json:
+              schema: AnimeSchema
+    """
     form = AddForm()
     anime = Anime.query.filter_by(title=form.title.data).first()
     if anime is not None:
@@ -171,11 +189,19 @@ def internal_error(error):
     return render_template("core/500.html"), 500
 
 
-# @app.route('/swagger', methods=['GET'])
-# def get_api_spec():
-#     swag = swagger(app)
-#     swag['info']['version'] = "1.0"
-#     swag['info']['title'] = "anime_app"
-#     print(swag)
-#     swag['info']['paths'] = 'j,jm,hjmcjmcj'
-#     return jsonify(swag)
+@app.route('/swagger', methods=['GET'])
+def get_api_spec():
+    swag = swagger(app)
+    swag['info']['version'] = "1.0"
+    swag['info']['title'] = "anime_app"
+    swag['info']['paths'] = 'j,jm,hjmcjmcj'
+    return jsonify(swag)
+
+
+# @app.route('/swagger')
+# def create_swagger_spec():
+#    return json.dumps(get_apispec(app).to_dict())
+
+# @app.route('/swagger.json')
+# def create_swagger_spec():
+#     return jsonify(spec.to_dict)

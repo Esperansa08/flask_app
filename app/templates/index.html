@@ -3,25 +3,17 @@
 {% block content %}
   <main>
       <section class="container my-5">
-        <div class="row">
           <h2>Привет, {{ current_user.username }}!</h2>
           <p>
           <h3>{{ context.anime.title }}</h3></p>
-            <p>
-              {{ context.anime.description }}
+            <p>{{ context.anime.description }}</p>
+            <p><h3>Аниме из Кинопоиска: </h3></p>
+            <p><img src={{context.kinopoisk.image}} height="140" align="left"
+              hspace="10" alt="Постер"/>
+              <h3 style="color: lightblue">{{context.kinopoisk.name}}</h3>
+              {{context.kinopoisk.description}}
             </p>
-            <p>
-              <h3>Аниме из Кинопоиска: </h3>
-              {{context.kinopoisk}}
-            </p>
-          <div class="col-12 col-lg-5">
-            <img
-              class="img-fluid mx-auto d-block"
-              src="static/img/illustration.png"
-              alt=""
-            />
-          </div>
-        </div>
+          </p>
       </section>
     </main>
 {% endblock %}

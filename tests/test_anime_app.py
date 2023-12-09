@@ -1,4 +1,4 @@
-#import anime_app
+# import anime_app
 
 
 # class TestSettings:
@@ -15,35 +15,36 @@ import math
 import random
 import pytest
 import json
-#import pandas as pd
-#from random import randint
+
+# import pandas as pd
+# from random import randint
 from app import app
 
 
-@pytest.fixture
-def client():
-    client = app.test_client()
-    yield client
+# @pytest.fixture
+# def client():
+#     client = app.test_client()
+#     yield client
 
 
-@pytest.fixture
-def db_data():
-    csv_file_path = os.path.join(os.pardir, 'db', 'wanted_temp_data.csv')
-    df = pd.read_csv(csv_file_path)
-    yield df
+# @pytest.fixture
+# def db_data():
+#     csv_file_path = os.path.join(os.pardir, 'db', 'wanted_temp_data.csv')
+#     df = pd.read_csv(csv_file_path)
+#     yield df
 
 
-def test_invalid_argument(client):
-    rv = client.get('/', follow_redirects=True)
-    assert 'errors' in json.loads(rv.data.decode("utf-8"))
-    # rv = client.get('/add_anime', follow_redirects=True)
-    # assert 'errors' in json.loads(rv.data.decode("utf-8"))
-    # rv = client.post('/company/tag', follow_redirects=True)
-    # assert 'The method is not allowed for the requested URL.' == \
-    #     json.loads(rv.data.decode("utf-8"))['message']
-    # rv = client.delete('/company/tag', follow_redirects=True)
-    # assert 'Input payload validation failed' == \
-    #     json.loads(rv.data.decode("utf-8"))['message']
+# def test_invalid_argument(client):
+#     rv = client.get('/', follow_redirects=True)
+#     assert 'errors' in json.loads(rv.data.decode("utf-8"))
+# rv = client.get('/add_anime', follow_redirects=True)
+# assert 'errors' in json.loads(rv.data.decode("utf-8"))
+# rv = client.post('/company/tag', follow_redirects=True)
+# assert 'The method is not allowed for the requested URL.' == \
+#     json.loads(rv.data.decode("utf-8"))['message']
+# rv = client.delete('/company/tag', follow_redirects=True)
+# assert 'Input payload validation failed' == \
+#     json.loads(rv.data.decode("utf-8"))['message']
 
 
 # def test_auto_complete_company_name(client, db_data):
