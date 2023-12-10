@@ -52,8 +52,3 @@ class UpdateForm(FlaskForm):
     title = StringField("Название", validators=[DataRequired()])
     description = TextAreaField("Описание", validators=[DataRequired()])
     submit = SubmitField("Сохранить")
-
-    # def validate_title(self, title):
-    #     anime = Anime.query.filter_by(title=title.data).first()
-    #     if anime is not None:
-    #         raise ValidationError("Please use a different title.")

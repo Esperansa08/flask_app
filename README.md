@@ -56,7 +56,7 @@ python -m venv venv
 * Если у вас windows
 
     ```
-    source venv/scripts/activate
+    source venv/Scripts/activate
     ```
 
 Установить зависимости из файла requirements.txt:
@@ -75,6 +75,16 @@ pip install -r requirements.txt
 ```
 docker-compose up -d
 ```
+Создаем базу и заполняем тестовыми данными:
+
+```
+python connector.py
+
+```
+Приложение будет доступно по адресу: http://localhost:5000/
+
+```
+
 ## Автор
 
  * Савельева Анастасия ([Почта](Visteria09@yandex.ru), [Github](https://github.com/Esperansa08))

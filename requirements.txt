@@ -70,3 +70,4 @@ flask_swagger_ui==4.11.1
 apispec-webframeworks==0.5.2
 marshmallow==3.20.1
 flask_swagger
+pymysql

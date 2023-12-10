@@ -47,7 +47,6 @@ async def background_task():
     description = response.json()["description"]
     image = response.json()['poster']['previewUrl']
     data = {"name": name, "description": description, "image": image}
-    # return f"{image}{name} - {description}"
     return data
 
 
