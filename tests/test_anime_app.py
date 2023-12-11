@@ -73,7 +73,6 @@ class FlaskAppTestCase(unittest.TestCase):
             self.assertEqual(
                 response.status_code, 200
             )  # expect a successful response
-            # self.assertIn(b'Home Page', response.data)  # expect 'Home Page' to be in the response content
 
     def test_anime_list(self):
         with self.app as client:
@@ -93,7 +92,6 @@ class FlaskAppTestCase(unittest.TestCase):
             self.assertEqual(
                 response.status_code, 200
             )  # expect a successful response
-            # self.assertIn(b'Profile Page', response.data)  # expect 'Profile Page' to be in the response content
 
 
 if __name__ == "__main__":
