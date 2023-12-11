@@ -1,11 +1,10 @@
-import asyncio
 import os
 import threading
 from random import randrange
 
 import requests
 from dotenv import load_dotenv
-from flask import json, jsonify, redirect, render_template, request, url_for
+from flask import jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from flask_swagger import swagger
 from werkzeug.urls import url_parse
@@ -15,12 +14,6 @@ from app.forms import AddForm, LoginForm, RegistrationForm, UpdateForm
 from app.models import Anime, User
 
 load_dotenv()
-
-# from celery import Celery
-# import schedule
-
-
-# celery = Celery(__name__)
 
 
 async def background_task():
@@ -66,8 +59,12 @@ async def index():
 @app.route("/add_anime", methods=["GET", "POST"])
 @login_required
 def add_anime():
-    """Gist detail view.
+    """Добавляем новое аниме
     ---
+    post:
+     content:
+        title
+        description
     get:
       responses:
         200:
@@ -92,6 +89,15 @@ def add_anime():
 @app.route("/delete/<int:id>", methods=["GET", "POST"])
 @login_required
 def delete_anime(id):
+    """Удаляем аниме
+    get:
+      responses:
+        200:
+          description: Endpoints related to Demo
+          content:
+            application/json:
+              schema: AnimeSchema
+    """
     anime = Anime.query.filter_by(id=id).first()
     if anime is None:
         flash("Такого аниме нет в базе")
@@ -105,6 +111,20 @@ def delete_anime(id):
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 @login_required
 def update_anime(id):
+    """Изменяем аниме
+    ---
+    post:
+     content:
+        title
+        description
+    get:
+      responses:
+        200:
+          description: Endpoints related to Demo
+          content:
+            application/json:
+              schema: AnimeSchema
+    """
     anime = Anime.query.get_or_404(id)
     form = UpdateForm(obj=anime)
     if anime is None:
@@ -125,6 +145,16 @@ def update_anime(id):
 @cache.cached(timeout=60)
 @login_required
 def anime_list():
+    """Получяем список аниме
+    ---
+    get:
+      responses:
+        200:
+          description: Endpoints related to Demo
+          content:
+            application/json:
+              schema: AnimeSchema
+    """
     anime = Anime.query.all()
     return render_template("anime_list.html", anime=anime)
 
@@ -184,14 +214,13 @@ def get_api_spec():
     swag = swagger(app)
     swag["info"]["version"] = "1.0"
     swag["info"]["title"] = "anime_app"
-    swag["info"]["paths"] = ("/", "/login", "/register", "/anime_list")
+    swag["info"]["paths"] = [
+        "/",
+        "/login",
+        "/register",
+        "/anime_list",
+        "/logout",
+        "/delete/<int:id>",
+        "/update/<int:id>",
+    ]
     return jsonify(swag)
-
-
-# @app.route('/swagger')
-# def create_swagger_spec():
-#    return json.dumps(get_apispec(app).to_dict())
-
-# @app.route('/swagger.json')
-# def create_swagger_spec():
-#     return jsonify(spec.to_dict)
