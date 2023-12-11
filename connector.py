@@ -28,12 +28,6 @@ def create_database(connection, query):
         print(f"The error '{e}' occurred")
 
 
-# ] = "mysql+pymysql://flask:slimdingo85@mysql:3306/flask"  #'mysql+pymysql://{}:{}@{}/{}'.format(
-#     os.getenv('DB_USER', 'flask'), 'mysql+pymysql://flask:slimdingo85@mysql:3306/flask'
-#     os.getenv('DB_PASSWORD', ''),
-#     os.getenv('DB_HOST', 'mysql'),
-#     os.getenv('DB_NAME', 'flask')
-# )
 connection = create_connection("127.0.0.1", "flask", "slimdingo85", "flask")
 create_database_query = "CREATE DATABASE IF NOT EXISTS flask DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 create_database(connection, create_database_query)
