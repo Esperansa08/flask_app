@@ -1,24 +1,18 @@
-from flask import (
-    render_template,
-    flash,
-    redirect,
-    url_for,
-    request,
-    jsonify,
-    json,
-)
-from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.urls import url_parse
-from app import app, db, cache, spec
-from app.forms import LoginForm, RegistrationForm, AddForm, UpdateForm
-from app.models import User, Anime
-from random import randrange
-import threading
 import asyncio
-from dotenv import load_dotenv
 import os
+import threading
+from random import randrange
+
 import requests
+from dotenv import load_dotenv
+from flask import json, jsonify, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
 from flask_swagger import swagger
+from werkzeug.urls import url_parse
+
+from app import app, cache, db, spec
+from app.forms import AddForm, LoginForm, RegistrationForm, UpdateForm
+from app.models import Anime, User
 
 load_dotenv()
 
@@ -27,9 +21,6 @@ load_dotenv()
 
 
 # celery = Celery(__name__)
-
-
-from typing import Any, Dict, Optional
 
 
 async def background_task():
@@ -41,11 +32,11 @@ async def background_task():
     response = requests.get(
         os.getenv("SERVER_URL"),
         params={"genres.name": "аниме"},
-        headers={'X-API-KEY': os.getenv('TOKEN')},
+        headers={"X-API-KEY": os.getenv("TOKEN")},
     )
     name = response.json()["name"]
     description = response.json()["description"]
-    image = response.json()['poster']['previewUrl']
+    image = response.json()["poster"]["previewUrl"]
     data = {"name": name, "description": description, "image": image}
     return data
 
@@ -188,12 +179,12 @@ def internal_error(error):
     return render_template("core/500.html"), 500
 
 
-@app.route('/swagger', methods=['GET'])
+@app.route("/swagger", methods=["GET"])
 def get_api_spec():
     swag = swagger(app)
-    swag['info']['version'] = "1.0"
-    swag['info']['title'] = "anime_app"
-    swag['info']['paths'] = 'j,jm,hjmcjmcj'
+    swag["info"]["version"] = "1.0"
+    swag["info"]["title"] = "anime_app"
+    swag["info"]["paths"] = ("/", "/login", "/register", "/anime_list")
     return jsonify(swag)
 
 

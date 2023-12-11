@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS user (
   id INT AUTO_INCREMENT,
   username char(50) UNIQUE NOT NULL,
   email char(50) UNIQUE NOT NULL,
-  password_hash varchar(128) NOT NULL,
+  password_hash varchar(128) UNIQUE NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE = InnoDB
 """
@@ -64,8 +64,8 @@ execute_query(connection, create_user_table)
 create_anime_table = """
 CREATE TABLE IF NOT EXISTS anime (
   id INT AUTO_INCREMENT,
-  title TEXT NOT NULL,
-  description TEXT NOT NULL,
+  title TEXT UNIQUE NOT NULL,
+  description UNIQUE TEXT NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE = InnoDB
 """

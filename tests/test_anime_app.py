@@ -1,148 +1,100 @@
-# import anime_app
+import unittest
 
-
-# class TestSettings:
-
-#     def test_settings(self):
-
-#         assert not anime_app.app.DEBUG, 'Проверьте, что DEBUG в настройках Flask выключен'
-#         assert settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql', (
-#             'Проверьте, что используете базу данных postgresql'
-#         )
-
-import os
-import math
-import random
+import flask_unittest
 import pytest
-import json
 
-# import pandas as pd
-# from random import randint
 from app import app
 
 
-# @pytest.fixture
-# def client():
-#     client = app.test_client()
-#     yield client
+@pytest.fixture
+def client():
+    # Set Flask application to test mode
+    app.config["TESTING"] = True
+
+    # Generate Flask test client
+    with app.test_client() as client:
+        yield client
+
+    # Reset Flask application mode
+    app.config["TESTING"] = False
 
 
-# @pytest.fixture
-# def db_data():
-#     csv_file_path = os.path.join(os.pardir, 'db', 'wanted_temp_data.csv')
-#     df = pd.read_csv(csv_file_path)
-#     yield df
+class FlaskAppTestCase(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+
+    def test_login(self):
+        with self.app as client:
+            # Perform a POST request to the login endpoint with valid credentials
+            response = client.get(
+                "/login", data=dict(username="test", password="testpassword")
+            )
+            self.assertEqual(
+                response.status_code, 200
+            )  # expect a redirect response
+
+    def test_register(self):
+        with self.app as client:
+            # Perform a POST request to the registration endpoint with valid form data
+
+            response = client.post(
+                "/register",
+                data=dict(
+                    username="newuser",
+                    email="test@example.com",
+                    password="newpassword",
+                    password2="newpassword",
+                ),
+            )
+            self.assertEqual(
+                response.status_code, 302
+            )  # expect a redirect response
+
+            # Ensure account was successfully registered
+            # You can check the database or perform a login request to verify the registration
+
+    def test_home(self):
+        with self.app as client:
+            # Perform a GET request to the home endpoint without logging in
+            response = client.get("/")
+            self.assertEqual(
+                response.status_code, 302
+            )  # expect a redirect response
+            response = client.get("/index")
+            self.assertEqual(response.status_code, 302)
+            # Log in the user
+            response = client.post(
+                "/login", data=dict(username="test", password="testpassword")
+            )
+
+            # Perform a GET request to the home endpoint after logging in
+            response = client.get("/")
+            self.assertEqual(
+                response.status_code, 200
+            )  # expect a successful response
+            # self.assertIn(b'Home Page', response.data)  # expect 'Home Page' to be in the response content
+
+    def test_anime_list(self):
+        with self.app as client:
+            # Perform a GET request to the profile endpoint without logging in
+            response = client.get("/anime_list")
+            self.assertEqual(
+                response.status_code, 302
+            )  # expect a redirect response
+
+            # Log in the user
+            response = client.post(
+                "/login", data=dict(username="test", password="testpassword")
+            )
+            self.assertEqual(response.status_code, 302)
+            # Perform a GET request to the profile endpoint after logging in
+            response = client.get("/anime_list")
+            self.assertEqual(
+                response.status_code, 200
+            )  # expect a successful response
+            # self.assertIn(b'Profile Page', response.data)  # expect 'Profile Page' to be in the response content
 
 
-# def test_invalid_argument(client):
-#     rv = client.get('/', follow_redirects=True)
-#     assert 'errors' in json.loads(rv.data.decode("utf-8"))
-# rv = client.get('/add_anime', follow_redirects=True)
-# assert 'errors' in json.loads(rv.data.decode("utf-8"))
-# rv = client.post('/company/tag', follow_redirects=True)
-# assert 'The method is not allowed for the requested URL.' == \
-#     json.loads(rv.data.decode("utf-8"))['message']
-# rv = client.delete('/company/tag', follow_redirects=True)
-# assert 'Input payload validation failed' == \
-#     json.loads(rv.data.decode("utf-8"))['message']
-
-
-# def test_auto_complete_company_name(client, db_data):
-#     for index, row in db_data.iterrows():
-#         for column in db_data.columns:
-#             value = row[column]
-#             if isinstance(value, float) and math.isnan(value):
-#                 continue
-
-#             company_name_tag, country_code = column.split('_')
-#             if company_name_tag == 'company':
-#                 start_index = random.randint(0, len(value) - 1)
-#                 end_index = random.randint(start_index + 1, len(value))
-#                 partial_name = value[start_index:end_index]
-#                 rv = client.get('/company', query_string=dict(name=partial_name), follow_redirects=True)
-#                 complete_name = json.loads(rv.data.decode("utf-8"))
-#                 assert partial_name in complete_name
-
-
-# def test_search_company_by_tag_name(client, db_data):
-#     for index, row in db_data.iterrows():
-#         company_names = []
-#         for column in db_data.columns:
-#             value = row[column]
-#             if isinstance(value, float) and math.isnan(value):
-#                 continue
-
-#             company_name_tag, country_code = column.split('_')
-#             if company_name_tag == 'company':
-#                 company_names.append(value)
-#             elif company_name_tag == 'tag':
-#                 assert company_names
-#                 tag_names = value.split('|')
-#                 chose_tag = random.choice(tag_names)
-#                 rv = client.get('/company/tag', query_string=dict(name=chose_tag), follow_redirects=True)
-#                 company_names_with_tag = json.loads(rv.data.decode("utf-8"))
-#                 assert company_names[0] in company_names_with_tag
-
-
-# def test_add_n_delete_tag_of_company(client, db_data):
-#     num_of_company = len(db_data.index)
-#     chose_company_index = random.randrange(num_of_company)
-#     row = db_data.iloc[chose_company_index]
-
-#     company_names = []
-#     tag_names_list = []
-#     for column in db_data.columns:
-#         value = row[column]
-#         if isinstance(value, float) and math.isnan(value):
-#             continue
-
-#         company_name_tag, country_code = column.split('_')
-#         if company_name_tag == 'company':
-#             company_names.append(value)
-#         elif company_name_tag == 'tag':
-#             tag_names_list += value.split('|')
-#     assert company_names and tag_names_list
-
-#     while True:
-#         tag_num = random.randint(1, 100)
-#         tag_names = [f'{tag_lan}_{tag_num}' for tag_lan in ['태그', 'tag', 'タグ']]
-#         if all(tag_name not in tag_names_list for tag_name in tag_names):
-#             break
-#     print(company_names, tag_names_list, tag_names)
-
-#     # add the tag to company
-#     chose_name = random.choice(company_names)
-#     arg_data = dict(name=chose_name, tag_ko=tag_names[0], tag_en=tag_names[1], tag_ja=tag_names[2])
-#     rv = client.put('/company/tag', json=arg_data, follow_redirects=True)
-#     company_names_with_tag = json.loads(rv.data.decode("utf-8"))
-#     assert 'Updated' in company_names_with_tag
-#     updated_tag_company_list = company_names_with_tag['Updated']
-#     for updated_tag_company in updated_tag_company_list:
-#         for company_name, tag_list in updated_tag_company.items():
-#             assert company_name in company_names
-#             assert sorted(tag_list) == sorted(tag_names)
-
-#     # confirm that there is a company name
-#     chose_tag = random.choice(tag_names)
-#     rv = client.get('/company/tag', query_string=dict(name=chose_tag), follow_redirects=True)
-#     company_names_with_tag = json.loads(rv.data.decode("utf-8"))
-#     assert company_names[0] in company_names_with_tag
-
-#     # delete the tag of company
-#     chose_name = random.choice(company_names)
-#     chose_tag = random.choice(tag_names)
-#     arg_data = dict(name=chose_name, tag=chose_tag)
-#     rv = client.delete('/company/tag', json=arg_data, follow_redirects=True)
-#     company_names_without_tag = json.loads(rv.data.decode("utf-8"))
-#     assert 'Deleted' in company_names_without_tag
-#     deleted_tag_company_list = company_names_without_tag['Deleted']
-#     for deleted_tag_company in deleted_tag_company_list:
-#         for company_name, tag_list in deleted_tag_company.items():
-#             assert company_name in company_names
-#             assert sorted(tag_list) == sorted(tag_names)
-
-#     # confirm that there is no company name
-#     chose_tag = random.choice(tag_names)
-#     rv = client.get('/company/tag', query_string=dict(name=chose_tag), follow_redirects=True)
-#     company_names_with_tag = json.loads(rv.data.decode("utf-8"))
-#     assert company_names[0] not in company_names_with_tag
+if __name__ == "__main__":
+    unittest.main()

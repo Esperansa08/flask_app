@@ -1,12 +1,13 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_login import LoginManager
-from config import Config
-from flask_caching import Cache
-from apispec_webframeworks.flask import FlaskPlugin
-from apispec.ext.marshmallow import MarshmallowPlugin
 from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
+from flask import Flask
+from flask_caching import Cache
+from flask_login import LoginManager
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,10 +17,10 @@ login = LoginManager(app)
 login.login_view = "login"
 cache = Cache(app)
 spec = APISpec(
-    title='Anime app',
-    version='1.0.1',
-    openapi_version='3.0.2',
+    title="Anime app",
+    version="1.0.1",
+    openapi_version="3.0.2",
     plugins=[FlaskPlugin(), MarshmallowPlugin()],
 )
 
-from app import routes, models  # noqa
+from app import models, routes  # noqa

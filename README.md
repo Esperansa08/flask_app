@@ -85,6 +85,13 @@ python connector.py
 
 ```
 
+Запуск тестов:
+
+```
+python -m unittest
+
+```
+
 ## Автор
 
  * Савельева Анастасия ([Почта](Visteria09@yandex.ru), [Github](https://github.com/Esperansa08))

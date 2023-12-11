@@ -1,26 +1,20 @@
-from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
+import json
 import os
+from pprint import pprint
+
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
+from flask import Flask, abort, jsonify, make_response, request
 from flask_caching import Cache
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from app.models import db, migrate
-from apispec import APISpec
-from apispec_webframeworks.flask import FlaskPlugin
-from apispec.ext.marshmallow import MarshmallowPlugin
-from marshmallow import Schema, fields
 
-# load_dotenv()
+
 from flask_swagger_ui import get_swaggerui_blueprint
-
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
-from apispec_webframeworks.flask import FlaskPlugin
 from marshmallow import Schema, fields
-from flask import Flask, abort, request, make_response, jsonify
-from pprint import pprint
-import json
 
+from app.models import db, migrate
 
 # class DemoParameter(Schema):
 #     gist_id = fields.Int()
@@ -168,8 +162,8 @@ def create_tables():
     db.create_all()
 
 
-from app import app, db, cache, spec
-from app.models import User, Anime
+from app import app, cache, db, spec
+from app.models import Anime, User
 
 
 @app.shell_context_processor
