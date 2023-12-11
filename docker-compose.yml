@@ -25,7 +25,7 @@ services:
     container_name: flask_mysql
     image: mysql:5.7
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql-data1:/var/lib/mysql
     restart: unless-stopped
     labels:
       project: "flask"
@@ -36,6 +36,7 @@ services:
       MYSQL_DATABASE: flask
       MYSQL_USER: flask
       MYSQL_PASSWORD: slimdingo85
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
 
   phpmyadmin:
     depends_on:
@@ -54,5 +55,5 @@ services:
       MYSQL_ROOT_PASSWORD: slimdingo85
 
 volumes:
-  mysql-data:
+  mysql-data1:
     driver: local
