@@ -5,7 +5,7 @@
 ![REST](https://img.shields.io/badge/-REST-464646?style=flat&logo=REST&logoColor=black)
 ![SQLAlchemy](https://img.shields.io/badge/-SQLAlchemy-464646?style=flat&logo=SQLAlchemy&logoColor=ffffff&color=043A6B)
 
- Проект "Антиматека" хранит и предоставляет информацию об аниме,
+ Проект "Аниматека" хранит и предоставляет информацию об аниме,
 создан с применением фреймворка Flask и SQLAlchemy.
 
 Доступ осуществляется через веб-сайт или посредством API.
